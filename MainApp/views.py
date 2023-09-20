@@ -17,7 +17,7 @@ items = [
     {"id": 6, "name": "Картонка"},
     {"id": 7, "name": "маленькая собачонка"},
 ]
-
+ 
 def home(request):
 
     text = f"""<h1>"Изучаем django"</h1>
