@@ -9,21 +9,27 @@ phone = "+7 9272189162"
 email = "pavel.v.romanov@megafon.ru"
 
 items = [
-    {"id": 1, "name": "Диван"},
-    {"id": 2, "name": "Чемодан"},
-    {"id": 3, "name": "Саквояж"},
-    {"id": 4, "name": "Картина"},
-    {"id": 5, "name": "Корзина"},
-    {"id": 6, "name": "Картонка"},
-    {"id": 7, "name": "маленькая собачонка"},
+    {"id": 1, "name": "Диван", "quantity":3},
+    {"id": 2, "name": "Чемодан", "quantity":1},
+    {"id": 3, "name": "Саквояж", "quantity":4},
+    {"id": 4, "name": "Картина", "quantity":1},
+    {"id": 5, "name": "Корзина", "quantity":5},
+    {"id": 6, "name": "Картонка", "quantity":9},
+    {"id": 7, "name": "маленькая собачонка", "quantity":0},
 ]
- 
+
+
+
 def home(request):
 
-    text = f"""<h1>"Изучаем django"</h1>
-<strong>Автор</strong>: <i>{full_name}</i>"""
+    context = {
+        'name':'Романов Павел',
+        'email':'pavel.v.romanov@megafon.ru'
+    }
 
-    return HttpResponse(text)
+    return render(request,"index.html",context)
+
+
 
 def about(request):
 
@@ -36,22 +42,27 @@ def about(request):
 
     return HttpResponse(text)
 
+
+
 def get_item(request,item_id):
 
-    text = ""
     for item in items:
         if item['id']==item_id:
-            text+=item['name']+"<br>"
+            context = {
+                'item': item
+            }
 
-    if text == "":
-        text=f"Товар с индексом {item_id} не найден"
+    if not context:
+        return HttpResponse(f"Товар с индексом {item_id} не найден")
 
-    return HttpResponse(text)
+    return render(request,"item.html",context)
+
+
 
 def get_all_items(request):
 
-    text = ""
-    for item in items:
-        text+=f"""<a href=/item/{item['id']}>{str(item['id'])} {item['name']}</a><br>"""
+    context = {
+        'items' : items
+    }
 
-    return HttpResponse(text)
+    return render(request,"items-list.html",context)
