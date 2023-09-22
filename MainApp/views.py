@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from MainApp.models import Item
+from django.core.exceptions import ObjectDoesNotExist
 
 full_name = "Романов П.В."
 first_name = "Павел"
@@ -55,16 +56,21 @@ def get_item(request,item_id):
 
     print(item_id)
 
-    item = Item.objects.get(id=item_id)
+    try:
 
-    print(item)
+        item = Item.objects.get(id=item_id)
+
+    except ObjectDoesNotExist:
+        return HttpResponse(f"""Товар с индексом {item_id} не найден<br><a href="/items">перейти на страницу со списком товаров</a>""")
+    except:
+        return HttpResponse(f"""Товар с индексом {item_id} совсем не найден<br><a href="/items">перейти на страницу со списком товаров</a>""")
 
     context = {
         'item': item
     }
 
-    if not context:
-        return HttpResponse(f"Товар с индексом {item_id} не найден")
+    #if not context:
+    #    return HttpResponse(f"Товар с индексом {item_id} не найден")
 
     return render(request,"item.html",context)
 
