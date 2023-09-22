@@ -9,8 +9,11 @@
     Товар: {{item.name}}
     <br>
 
-    {% if item.quantity %}
-        Количество: {{item.quantity}}
+    Бренд: {{item.brand}}
+    <br>
+
+    {% if item.count %}
+        Количество: {{item.count}}
     {% else %}
         товар отсутствует
     {% endif %}
