@@ -1,11 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Item</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block title %}
+    Item details
+{% endblock %}
+
+{% block content %}
+
     Товар: {{item.name}}
     <br>
 
@@ -20,7 +20,6 @@
 
     <br>
     <br>
-    <a href="/items">перейти на страницу со списком товаров</a>
+    <a href="{% url 'all-items' %}">перейти на страницу со списком товаров</a>
 
-</body>
-</html>
+{% endblock %}

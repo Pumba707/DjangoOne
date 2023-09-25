@@ -3,12 +3,7 @@ from django.http import HttpResponse
 from MainApp.models import Item
 from django.core.exceptions import ObjectDoesNotExist
 
-full_name = "Романов П.В."
-first_name = "Павел"
-middle_name = "Витальевич"
-last_name = "Романов"
-phone = "+7 9272189162"
-email = "pavel.v.romanov@megafon.ru"
+
 
 #items = [
 #    {"id": 1, "name": "Диван", "quantity":3},
@@ -35,14 +30,16 @@ def home(request):
 
 def about(request):
 
-    text = ""
-    text += f"Имя: {first_name}<br>"
-    text += f"Отчество: {middle_name}<br>"
-    text += f"Фамилия: {last_name}<br>"
-    text += f"телефон: {phone}<br>"
-    text += f"email: {email}<br>"
+    author = {
+        'full_name': 'Романов П.В.',
+        'first_name':'Павел',
+        'middle_name': 'Витальевич',
+        'last_name': 'Романов',
+        'phone': '+7 9272189162',
+        'email': 'pavel.v.romanov@megafon.ru',
+    }
 
-    return HttpResponse(text)
+    return render(request,"about.html",author)
 
 
 
@@ -54,16 +51,24 @@ def get_item(request,item_id):
     #            'item': item
     #        }
 
-    print(item_id)
+    #print(item_id)
 
     try:
 
         item = Item.objects.get(id=item_id)
 
     except ObjectDoesNotExist:
-        return HttpResponse(f"""Товар с индексом {item_id} не найден<br><a href="/items">перейти на страницу со списком товаров</a>""")
+        context = {
+            'error_text': f"""Товар с индексом {item_id} не найден"""
+        }
+        return render(request,"error_page.html",context)
     except:
-        return HttpResponse(f"""Товар с индексом {item_id} совсем не найден<br><a href="/items">перейти на страницу со списком товаров</a>""")
+        context = {
+            'error_text': f"""случилась непредвиденная ошибка при попытке
+             найти товар с индексом {item_id}"""
+        }
+        return render(request,"error_page.html",context)
+
 
     context = {
         'item': item
